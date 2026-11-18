@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from collections import deque
 import threading
 import time
@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Python server is online!"
+    return render_template("index.html")
 
 datatable = deque()
 current_value = None
