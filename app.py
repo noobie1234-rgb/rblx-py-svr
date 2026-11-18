@@ -44,5 +44,7 @@ def next_value():
 
     value = current_value
     current_value = None
-
-    return f'"value":"{value}"'
+    print("Get")
+    print(value)
+    print(type(value))
+    return jsonify({"value": value})
