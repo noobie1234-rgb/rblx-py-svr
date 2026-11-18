@@ -5,6 +5,10 @@ import time
 
 app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return "Python server is online!"
+
 datatable = deque()
 current_value = None
 
@@ -21,10 +25,6 @@ def process_queue():
         time.sleep(INTERVAL)
 
 threading.Thread(target=process_queue, daemon=True).start()
-
-@app.route("/")
-def home():
-    return "Python server is online!"
 
 @app.route("/submit", methods=["POST"])
 def submit():
