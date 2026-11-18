@@ -35,7 +35,7 @@ def submit():
     for value in user_input.split():
         datatable.append(value)
 
-    return jsonify({"status": "received"})
+    return jsonify({"value": value})
 
 
 @app.route("/next", methods=["GET"])
