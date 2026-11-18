@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Python Server</title>
+</head>
+<body>
+
+    <input type="text" id="textbox" placeholder="Type something..."
+           style="width:400px; height:50px; font-size:20px;">
+
+    <button onclick="sendData()"
+            style="width:120px; height:55px; font-size:20px;">
+        Submit
+    </button>
+
+    <p id="response"></p>
+
+    <script>
+        async function sendData() {
+            const text = document.getElementById("textbox").value;
+
+            const result = await fetch("/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({value: text})
+            });
+
+            const data = await result.json();
+
+            document.getElementById("response").innerText =
+                JSON.stringify(data);
+        }
+    </script>
+
+</body>
+</html>
