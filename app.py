@@ -22,6 +22,9 @@ def process_queue():
 
 threading.Thread(target=process_queue, daemon=True).start()
 
+@app.route("/")
+def home():
+    return "Python server is online!"
 
 @app.route("/submit", methods=["POST"])
 def submit():
