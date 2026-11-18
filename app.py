@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, Response
+from urllib.parse import urlencode
 from collections import deque
 import threading
 import time
@@ -45,4 +46,7 @@ def next_value():
     value = current_value
     current_value = None
 
-    return jsonify({"value": value})
+    return Response(
+        urlencode({"value": value if value is not None else ""}),
+        mimetype="application/x-www-form-urlencoded"
+    )
