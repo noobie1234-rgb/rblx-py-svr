@@ -38,13 +38,14 @@ def submit():
     return jsonify({"status":"received"})
 
 
-@app.route("/next", methods=["GET"])
+@app.route('/', methods=["GET"])
 def next_value():
     global current_value
 
     value = current_value
     current_value = None
-    print("Get")
-    print(value)
-    print(type(value))
+
     return jsonify({"value": value})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
