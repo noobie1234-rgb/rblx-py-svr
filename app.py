@@ -1,51 +1,52 @@
-from flask import Flask, request, jsonify, render_template
-from collections import deque
-import threading
-import time
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
+
+currentWord = None
+table = []
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
-datatable = deque()
-current_value = None
 
-INTERVAL = 0.1  # Seconds between values
-
-def process_queue():
-    global current_value
-
-    while True:
-        if datatable:
-            current_value = datatable.popleft()
-            print("Sending:", current_value)
-
-        time.sleep(INTERVAL)
-
-threading.Thread(target=process_queue, daemon=True).start()
-
+# Receive text from HTML
 @app.route("/submit", methods=["POST"])
 def submit():
+    global table, currentWord
+
     data = request.get_json()
+    text = data.get("value", "")
 
-    user_input = data["value"]
+    table = text.split()
+    currentWord = None
 
-    for value in user_input.split():
-        datatable.append(value)
+    print("User entered:", text)
 
-    return jsonify({"status":"received"})
+    return jsonify({
+        "status": "success",
+        "received": text,
+        "message": "Input received successfully!"
+    })
 
 
-@app.route('/', methods=["GET"])
-def next_value():
-    global current_value
+# Get the next word
+@app.route("/next", methods=["GET"])
+def next_word():
+    global table, currentWord
 
-    value = current_value
-    current_value = None
+    if len(table) > 0:
+        currentWord = table.pop(0)
 
-    return jsonify({"value": value})
+        return jsonify({
+            "value": currentWord
+        })
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    return jsonify({
+        "value": "00000000"
+    })
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
